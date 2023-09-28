@@ -3,7 +3,7 @@ import AppError from "../../error";
 import { IAnnouncements, IAnnouncementsCreate, IAnnouncementsRead } from "../../interfaces/announcements/announcements.interface";
 import announcementsRepositories from "../../repositories/announcements.repositories";
 
-export const announcementCreateService = async (body: IAnnouncementsCreate): Promise<IAnnouncements> => {
+export const announcementCreateService = async (body: IAnnouncementsCreate): Promise<IAnnouncements | null> => {
   const announcement = announcementsRepositories.create(body);
   await announcementsRepositories.save(announcement);
 
@@ -11,19 +11,20 @@ export const announcementCreateService = async (body: IAnnouncementsCreate): Pro
 };
 
 export const announcementReadService = async (): Promise<IAnnouncementsRead> => {
-  return announcementsRepositories.find();
+  const announcement = await announcementsRepositories.find();
+  return announcement;
 };
 
 export const announcementReadByIdService = async (id: string): Promise<IAnnouncements | null> => {
   const announcement = await announcementsRepositories.findOneBy({ id: parseInt(id) });
   if (!announcement) {
-    throw new AppError("Anúncio não existe", 404);
+    throw new AppError("announcement not found", 404);
   }
   return announcement;
 };
 
 export const announcementUpdateService = async (id: string, body: IAnnouncementsCreate): Promise<IAnnouncementsCreate | null> => {
-  announcementsRepositories.update(id, body);
+  await announcementsRepositories.update(id, body);
   const updatedAnnouncement = await announcementsRepositories.findOneBy({ id: parseInt(id) });
 
   return updatedAnnouncement;

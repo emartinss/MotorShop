@@ -23,22 +23,22 @@ export const announcementReadController = async (req: Request, res: Response): P
 
 export const announcementReadByIdController = async (req: Request, res: Response): Promise<Response> => {
   const id = req.params.id;
-  const announcement = announcementReadByIdService(id);
-
+  const announcement = await announcementReadByIdService(id);
+console.log(announcement)
   return res.status(200).json(announcement);
 };
 
 export const announcementUpdateController = async (req: Request, res: Response): Promise<Response> => {
   const id = req.params.id;
   const body = res.locals.validated;
-  const announcement = announcementUpdateService(id, body);
+  const announcement = await announcementUpdateService(id, body);
 
   return res.status(201).json(announcement);
 };
 
 export const announcementDeleteController = async (req: Request, res: Response): Promise<void> => {
   const id = req.params.id;
-  const announcement = announcementDeleteService(id);
+  const announcement = await announcementDeleteService(id);
 
   res.status(204).json();
 };

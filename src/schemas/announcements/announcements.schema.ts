@@ -4,7 +4,7 @@ export const announcementsSchema = z.object({
   id: z.number(),
   brand: z.string().max(45),
   model: z.string().max(45),
-  year: z.number(),
+  year: z.string(),
   fuel: z.string().max(20),
   mileage: z.number(),
   color: z.string().max(35),

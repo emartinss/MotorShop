@@ -17,5 +17,5 @@ export const announcementRoute: Router = Router();
 announcementRoute.post("", verifyToken, isAdvertiser, validatedBody(announcementsCreateSchema), announcementsCreateController);
 announcementRoute.get("", announcementReadService);
 announcementRoute.get("/:id", announcementReadByIdController);
-announcementRoute.patch("/:id", verifyToken, isTokenOwner, validatedBody(announcementsUpdateSchema), announcementUpdateController);
-announcementRoute.delete("/:id", verifyToken, isTokenOwner, announcementDeleteController);
+announcementRoute.patch("/:id", verifyToken, validatedBody(announcementsUpdateSchema), announcementUpdateController);
+announcementRoute.delete("/:id", verifyToken, announcementDeleteController);
