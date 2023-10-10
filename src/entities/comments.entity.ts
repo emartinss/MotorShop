@@ -1,12 +1,20 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import User from "./users.entity";
+import Announcement from "./announcements.entity";
 
 @Entity("Comments")
 class Comment {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ type: "text" })
   comment: string;
+
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: "SET NULL" })
+  user: User;
+
+  @ManyToOne(() => Announcement, (anouncement) => anouncement.user, { onDelete: "SET NULL" })
+  announcements: Announcement;
 }
 
-export default Comment
+export default Comment;

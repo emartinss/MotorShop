@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import User from "./users.entity";
 
 @Entity("addresses")
 class Address {
@@ -20,8 +21,12 @@ class Address {
   @Column({ type: "integer" })
   number: number;
 
-  @Column({ length: 50 })
-  complement: string;
+  @Column({ type: "varchar", length: 50, nullable: true })
+  complement: string | null | undefined;
+
+  @OneToOne(() => User, (user) => user.address) 
+  @JoinColumn()
+  user: User;
 }
 
-export default Address
+export default Address;

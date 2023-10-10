@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import User from "./users.entity";
+import Image from "./images.entity";
+import Comment from "./comments.entity";
 
 @Entity("Announcements")
 class Announcement {
@@ -31,6 +34,15 @@ class Announcement {
 
   @Column({ type: "text" })
   description: string;
+
+  @ManyToOne(() => User, (user) => user.announcements)
+  user: User;
+
+  @OneToMany(() => Image, (image) => image.announcement)
+  image: Image;
+
+  @OneToMany(() => Comment, (comment) => comment.announcements)
+  comment: Comment[];
 }
 
 export default Announcement;

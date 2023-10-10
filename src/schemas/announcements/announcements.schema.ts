@@ -13,6 +13,10 @@ export const announcementsSchema = z.object({
   description: z.string(),
 });
 
+export const userAdsSchema = z.object({
+  announcements: announcementsSchema.array(),
+});
+
 export const announcementsCreateSchema = announcementsSchema.omit({ id: true });
-export const announcementsUpdateSchema = announcementsCreateSchema.partial()
-export const announcementsReadSchema = announcementsSchema.array()
+export const announcementsUpdateSchema = announcementsCreateSchema.partial();
+export const announcementsReadSchema = announcementsSchema.array();

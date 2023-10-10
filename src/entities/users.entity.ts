@@ -1,5 +1,8 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { getRounds, hashSync } from "bcryptjs";
+import Comment from "./comments.entity";
+import Address from "./address.entity";
+import Announcement from "./announcements.entity";
 
 @Entity("users")
 class User {
@@ -30,6 +33,15 @@ class User {
   @Column({ type: "boolean" })
   is_advertiser: boolean;
 
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
+
+  @OneToOne(() => Address, (address) => address.user)
+  address: Address;
+
+  @OneToMany(() => Announcement, (announcement) => announcement.user)
+  announcements: Announcement[];
+
   @BeforeInsert()
   @BeforeUpdate()
   hashPassword() {
@@ -40,4 +52,4 @@ class User {
   }
 }
 
-export default User
+export default User;
