@@ -38,7 +38,7 @@ class Announcement {
   @ManyToOne(() => User, (user) => user.announcements)
   user: User;
 
-  @OneToMany(() => Image, (image) => image.announcement)
+  @OneToMany(() => Image, (image) => image.announcement, { onDelete: "CASCADE" })
   image: Image;
 
   @OneToMany(() => Comment, (comment) => comment.announcements)

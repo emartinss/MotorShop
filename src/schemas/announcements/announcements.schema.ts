@@ -11,6 +11,7 @@ export const announcementsSchema = z.object({
   fipe: z.number(),
   price: z.number(),
   description: z.string(),
+  image_url:z.string().nullish()
 });
 
 export const userAdsSchema = z.object({

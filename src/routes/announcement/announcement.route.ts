@@ -11,6 +11,7 @@ import { validatedBody } from "../../middlewares/validatedBody.middleware";
 import { announcementsCreateSchema, announcementsUpdateSchema } from "../../schemas/announcements/announcements.schema";
 import { verifyToken } from "../../middlewares/verifyToken.middleware";
 import { isAdvertiser } from "../../middlewares/isAdvertiser.middleware";
+import { isTokenOwner } from "../../middlewares/isTokenOwner.middleware";
 
 export const announcementRoute: Router = Router();
 

@@ -6,16 +6,26 @@ import {
   IUserAdsRead,
 } from "../../interfaces/announcements/announcements.interface";
 import announcementsRepositories from "../../repositories/announcements.repositories";
+import imageRepositories from "../../repositories/image.repositories";
 import usersRepositories from "../../repositories/users.repositories";
 import { announcementsSchema, userAdsSchema } from "../../schemas/announcements/announcements.schema";
 
-export const announcementCreateService = async (body: IAnnouncementsCreate, userId: string): Promise<IAnnouncements | null> => {
+export const announcementCreateService = async (
+  { image_url, ...body }: IAnnouncementsCreate,
+  userId: string
+): Promise<IAnnouncements | null> => {
   const user = await usersRepositories.findOne({ where: { id: parseInt(userId) } });
   if (!user) {
     throw new AppError("user not found", 404);
   }
   const announcement = announcementsRepositories.create({ ...body, user: user });
   await announcementsRepositories.save(announcement);
+
+  if (image_url) {
+    const image = imageRepositories.create({ image_url: image_url, announcement: announcement });
+    await imageRepositories.save(image);
+  }
+
   return announcementsSchema.parse(announcement);
 };
 

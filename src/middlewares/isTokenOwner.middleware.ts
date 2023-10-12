@@ -30,6 +30,7 @@ export const isTokenOwnerComment = async (req: Request, res: Response, next: Nex
 export const isTokenOwnerOrAdvertiser = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { decoded } = res.locals;
   const announcement = await announcementsRepositories.findOne({ where: { id: parseInt(req.params.id) }, relations: { user: true } });
+  console.log(decoded.sub, announcement?.user.id)
   if (decoded.sub != announcement?.user.id) {
     throw new AppError("Insufficient permission", 403);
   }

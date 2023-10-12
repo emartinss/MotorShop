@@ -14,6 +14,11 @@ export const users = z.object({
   is_advertiser: z.boolean(),
   address: addressesCreate,
 });
+
+export const userComment = z.object({
+  id: z.number(),
+  name: z.string().max(45),
+})
 export const userCreate = users.omit({ id: true });
 export const usersReturn = users.omit({ password: true, cpf: true, confirm_password:true });
 export const usersRead = usersReturn.array()

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import usersRepositories from "../repositories/users.repositories";
 import AppError from "../error";
 
-export const isAdvertiser = async (req: Request, res: Response, next: NextFunction) => {
+export const isAdvertiser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const userId = res.locals.decoded.sub;
   const user = await usersRepositories.findOneBy({ id: parseInt(userId) });
   if (!user) {

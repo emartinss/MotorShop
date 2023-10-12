@@ -5,7 +5,7 @@ import commentsRepositories from "../../repositories/comments.repositories";
 import usersRepositories from "../../repositories/users.repositories";
 import { commentSchema } from "../../schemas/comments/comment.schema";
 
-export const addCommentService = async (body: ICommentCreate, adId: string, userId: string) => {
+export const addCommentService = async (body: ICommentCreate, adId: string, userId: string): Promise<IComment> => {
   const announcement = await announcementsRepositories.findOneBy({ id: parseInt(adId) });
   if (!announcement) {
     throw new AppError("anannouncement not found", 404);
@@ -20,14 +20,27 @@ export const addCommentService = async (body: ICommentCreate, adId: string, user
 };
 
 export const getAdCommentsService = async (id: string) => {
-  const comments = await announcementsRepositories.findOne({
-    where: { id: parseInt(id) },
-    relations: { comment: true },
-  });
-  if (!comments) {
-    throw new AppError("comments not found", 404);
+  const announcement = await announcementsRepositories.findOne({ where: { id: parseInt(id) } });
+
+  if (!announcement) {
+    throw new AppError("Announcement not found", 404);
   }
-  return comments;
+
+  const comments = await commentsRepositories.find({
+    where: { announcements: { id: parseInt(id) } },
+    relations: ["user"],
+  });
+
+  const result = {
+    announcement: announcement,
+    comments: comments.map((comment) => ({
+      id: comment.user.id,
+      name: comment.user.name,
+      comment: comment.comment,
+    })),
+  };
+
+  return result;
 };
 
 export const updateCommentService = async (id: string, body: ICommentCreate): Promise<IComment | null> => {

@@ -6,11 +6,11 @@ class Image {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
+  @Column({ length: 512 })
   image_url: string;
 
-  @ManyToOne(() => Announcement, (announcement) => announcement.image)
-  announcement: Announcement[];
+  @ManyToOne(() => Announcement, (announcement) => announcement.image, { onDelete: "CASCADE" })
+  announcement: Announcement;
 }
 
 export default Image;

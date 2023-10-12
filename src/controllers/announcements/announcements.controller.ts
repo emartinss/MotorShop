@@ -43,9 +43,9 @@ export const announcementUpdateController = async (req: Request, res: Response):
   return res.status(201).json(announcement);
 };
 
-export const announcementDeleteController = async (req: Request, res: Response): Promise<void> => {
+export const announcementDeleteController = async (req: Request, res: Response): Promise<Response> => {
   const id = req.params.id;
   const announcement = await announcementDeleteService(id);
 
-  res.status(204).json();
+  return res.status(204).json();
 };
