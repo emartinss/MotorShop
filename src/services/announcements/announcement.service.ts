@@ -29,7 +29,7 @@ export const announcementCreateService = async (
   return announcementsSchema.parse(announcement);
 };
 
-export const announcementReadService = async (): Promise<IAnnouncementsRead> => {
+export const announcementReadService = async (): Promise<IAnnouncementsRead | null> => {
   const announcement = await announcementsRepositories.find();
   return announcement;
 };

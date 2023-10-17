@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   announcementDeleteController,
   announcementReadByIdController,
+  announcementReadController,
   announcementUpdateController,
   announcementsCreateController,
   getUserAdsController,
@@ -11,12 +12,11 @@ import { validatedBody } from "../../middlewares/validatedBody.middleware";
 import { announcementsCreateSchema, announcementsUpdateSchema } from "../../schemas/announcements/announcements.schema";
 import { verifyToken } from "../../middlewares/verifyToken.middleware";
 import { isAdvertiser } from "../../middlewares/isAdvertiser.middleware";
-import { isTokenOwner } from "../../middlewares/isTokenOwner.middleware";
 
 export const announcementRoute: Router = Router();
 
 announcementRoute.post("", verifyToken, isAdvertiser, validatedBody(announcementsCreateSchema), announcementsCreateController);
-announcementRoute.get("", announcementReadService);
+announcementRoute.get("", announcementReadController);
 announcementRoute.get("/advertiser/:id", getUserAdsController);
 announcementRoute.get("/:id", announcementReadByIdController);
 announcementRoute.patch("/:id", verifyToken, validatedBody(announcementsUpdateSchema), announcementUpdateController);
