@@ -23,3 +23,4 @@ export const userCreate = users.omit({ id: true });
 export const usersReturn = users.omit({ password: true, cpf: true, confirm_password:true });
 export const usersRead = usersReturn.array()
 export const usersUpdate = users.omit({ id: true, is_advertiser: true, cpf: true, password: true }).partial();
+export const userById = usersReturn.omit({address:true})

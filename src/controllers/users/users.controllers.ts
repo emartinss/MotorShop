@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createUserService, deleteUserService,  updateUserService } from "../../services/users/users.service";
+import { createUserService, deleteUserService, readUserByIdService, updateUserService } from "../../services/users/users.service";
 
 export const createUserController = async (req: Request, res: Response): Promise<Response> => {
   const body = res.locals.validated;
@@ -7,7 +7,12 @@ export const createUserController = async (req: Request, res: Response): Promise
   return res.status(201).json(userCreate);
 };
 
+export const readUserByIdController = async (req: Request, res: Response): Promise<Response> => {
+  const id = req.params.id;
+  const user = await readUserByIdService(id);
 
+  return res.status(200).json(user);
+};
 
 export const updateUserController = async (req: Request, res: Response): Promise<Response> => {
   const userBody = res.locals.validated;

@@ -30,12 +30,12 @@ export const announcementCreateService = async (
 };
 
 export const announcementReadService = async (): Promise<IAnnouncementsRead | null> => {
-  const announcement = await announcementsRepositories.find();
+  const announcement = await announcementsRepositories.find({ relations: { image: true, user: true } });
   return announcement;
 };
 
 export const announcementReadByIdService = async (id: string): Promise<IAnnouncements | null> => {
-  const announcement = await announcementsRepositories.findOneBy({ id: parseInt(id) });
+  const announcement = await announcementsRepositories.findOne({ where: { id: parseInt(id) }, relations: { image: true, user: true } });
   if (!announcement) {
     throw new AppError("announcement not found", 404);
   }

@@ -15,7 +15,7 @@ export const loginService = async (loginData: any): Promise<IToken> => {
   if (!samePassword) {
     throw new AppError("Invalid credentials", 401);
   }
-  const token: string = sign({ email: user.email }, process.env.SECRET_KEY!, {
+  const token: string = sign({ email: user.email, name:user.name, advertiser:user.is_advertiser }, process.env.SECRET_KEY!, {
     subject: user.id.toString(),
     expiresIn: process.env.EXPIRES_IN!,
   });
