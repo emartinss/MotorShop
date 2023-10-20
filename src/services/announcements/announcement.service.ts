@@ -34,8 +34,8 @@ export const announcementReadService = async (): Promise<IAnnouncementsRead | nu
   return announcement;
 };
 
-export const announcementReadByIdService = async (id: string): Promise<IAnnouncements | null> => {
-  const announcement = await announcementsRepositories.findOne({ where: { id: parseInt(id) }, relations: { image: true, user: true } });
+export const announcementReadByIdService = async (id: string): Promise<IAnnouncementsRead | null> => {
+  const announcement = await announcementsRepositories.find({ relations: { image: true } });
   if (!announcement) {
     throw new AppError("announcement not found", 404);
   }
