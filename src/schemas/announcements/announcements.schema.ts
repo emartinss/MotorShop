@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { usersReturn } from "../users/users.schema";
 
 export const announcementsSchema = z.object({
   id: z.number(),
@@ -11,7 +12,7 @@ export const announcementsSchema = z.object({
   fipe: z.number(),
   price: z.number(),
   description: z.string(),
-  image_url:z.string().nullish()
+  image_url: z.string().nullish(),
 });
 
 export const userAdsSchema = z.object({

@@ -1,3 +1,4 @@
+import { boolean } from "zod";
 import AppError from "../../error";
 import {
   IAnnouncements,
@@ -34,8 +35,11 @@ export const announcementReadService = async (): Promise<IAnnouncementsRead | nu
   return announcement;
 };
 
-export const announcementReadByIdService = async (id: string): Promise<IAnnouncementsRead | null> => {
-  const announcement = await announcementsRepositories.find({ relations: { image: true } });
+export const announcementReadByIdService = async (id: string): Promise<IAnnouncements | null> => {
+  const announcement = await announcementsRepositories.findOne({
+    where: { id: parseInt(id) },
+    relations: { image: true, user: true, comment: { user: true } },
+  });
   if (!announcement) {
     throw new AppError("announcement not found", 404);
   }
@@ -43,18 +47,21 @@ export const announcementReadByIdService = async (id: string): Promise<IAnnounce
 };
 
 export const getUserAdsService = async (userId: string): Promise<IUserAdsRead | null> => {
-  const user = await usersRepositories.findOne({
+  const user: any = await usersRepositories.find({
     where: { id: parseInt(userId) },
-    relations: { announcements: true },
+    relations: ["announcements", "announcements.image"],
   });
-  if (!user) {
+  if (user.length <= 0 || !user) {
     throw new AppError("user not found", 404);
   }
 
-  return userAdsSchema.parse(user);
+  return user[0].announcements;
 };
 
-export const announcementUpdateService = async (id: string, body: IAnnouncementsCreate): Promise<IAnnouncementsCreate | null> => {
+export const announcementUpdateService = async (
+  id: string,
+  { image_url, ...body }: IAnnouncementsCreate
+): Promise<IAnnouncementsCreate | null> => {
   await announcementsRepositories.update(id, body);
   const updatedAnnouncement = await announcementsRepositories.findOneBy({ id: parseInt(id) });
 
